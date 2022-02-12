@@ -2,7 +2,7 @@ app.factory('Main', function ($http) {
     let protocol = location.protocol;
     let host = location.host;
     var baseUrl = `http://192.168.20.127:8082`;
-    
+
     return {
         post: function (service, data, success, error) {
             return $http({
