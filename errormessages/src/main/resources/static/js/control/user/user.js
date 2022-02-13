@@ -56,7 +56,6 @@ app.controller('user', function ($rootScope, $scope, Main, $http, $location, $lo
 
 
     $scope.disable = () => {
-        $rootScope.loading = true;
         Main.put(us + '/' + $scope.disableUser.id,null,
             (success) => {
                 $rootScope.showToastr(success.data.type, success.data.text);
