@@ -19,16 +19,25 @@ public class User {
     private String secondLastname;
     private Date birthday;
     @Column(nullable = false, unique = true)
-    private String email;
+    private String username;
     @JsonIgnore
     @Column(nullable = false)
     private String password;
+    private boolean status;
 
     public void asignValuesRegister(UserDto dto){
         this.name = dto.getName();
         this.lastname = dto.getLastname();
         this.secondLastname = dto.getSecondLastname();
         this.birthday = dto.getBirthday();
-        this.email = dto.getEmail();
+        this.username = dto.getUsername();
+        this.status = true;
+    }
+
+    public void asignValuesModify(UserDto dto){
+        this.name = dto.getName();
+        this.lastname = dto.getLastname();
+        this.secondLastname = dto.getSecondLastname();
+        this.birthday = dto.getBirthday();
     }
 }
