@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional
@@ -33,6 +34,14 @@ public class UserService {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    public boolean patternMatches(String emailAddress) {
+        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        return Pattern.compile(regexPattern)
+                .matcher(emailAddress)
+                .matches();
+    }
+
     public Optional<User> findFirstByUsername(String username) {
         return repository.findFirstByUsername(username);
     }
@@ -44,6 +53,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public ResponseEntity login(UserDto dto) {
+        if (!passwordValidator.isValid(dto.getPassword())) {
+            return new ResponseEntity(new Message("La contraseña no cumple con las características de contraseña segura", "warning"), HttpStatus.BAD_REQUEST);
+        }
+        if (!patternMatches(dto.getUsername())) {
+            return new ResponseEntity(new Message("Correo electrónico mal formado", "warning"), HttpStatus.BAD_REQUEST);
+        }
         try {
             Optional<User> optionalUser = repository.findFirstByUsername(dto.getUsername());
             if (!optionalUser.isPresent()) {
@@ -62,7 +77,10 @@ public class UserService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity save(UserDto dto) {
         if (!passwordValidator.isValid(dto.getPassword())) {
-            return new ResponseEntity(new Message("La contraseña no cumple con las características de contraseña segura", "error"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Message("La contraseña no cumple con las características de contraseña segura", "warning"), HttpStatus.BAD_REQUEST);
+        }
+        if (!patternMatches(dto.getUsername())) {
+            return new ResponseEntity(new Message("Correo electrónico mal formado", "warning"), HttpStatus.BAD_REQUEST);
         }
         Optional<User> optionalUser = repository.findFirstByUsername(dto.getUsername());
         if (optionalUser.isPresent()) {
@@ -95,10 +113,10 @@ public class UserService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity updatePassword(UserDto dto) {
+        if (!passwordValidator.isValid(dto.getNewPassword())) {
+            return new ResponseEntity(new Message("La contraseña no cumple con las características de contraseña segura", "warning"), HttpStatus.BAD_REQUEST);
+        }
         try {
-            if (!passwordValidator.isValid(dto.getNewPassword())) {
-                return new ResponseEntity(new Message("La contraseña no cumple con las características de contraseña segura", "error"), HttpStatus.BAD_REQUEST);
-            }
             Optional<User> optionalUser = repository.findById(dto.getId());
             if (!optionalUser.isPresent()) {
                 return new ResponseEntity(new Message("Usuario no encontrado", "warning"), HttpStatus.NOT_FOUND);
@@ -123,7 +141,7 @@ public class UserService {
     public ResponseEntity updateStatus(Long id) {
         Optional<User> optUser = repository.findById(id);
         if (!optUser.isPresent()) {
-            return new ResponseEntity(new Message("Usuario no encontrado", "error"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Message("Usuario no encontrado", "warning"), HttpStatus.NOT_FOUND);
         }
         User user = optUser.get();
         user.setStatus(!user.isStatus());
