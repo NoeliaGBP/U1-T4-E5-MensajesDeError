@@ -66,7 +66,7 @@ public class UserService {
         }
         Optional<User> optionalUser = repository.findFirstByUsername(dto.getUsername());
         if (optionalUser.isPresent()) {
-            return new ResponseEntity(new Message("El nombre de usuario ingresado ya existe", "warning"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Message("El correo ingresado ya existe", "warning"), HttpStatus.BAD_REQUEST);
         }
         User user = new User();
         user.asignValuesRegister(dto);
