@@ -1,0 +1,303 @@
+<div class="layout-fixed" ng-init="init()">
+    <div class="">
+
+        <div class="">
+            <br>
+            <section class="content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">USUARIOS</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <a class="btn btn-outline-secondary" data-toggle="modal" data-target="#modalForm">
+                                    REGISTRAR
+                                </a>
+                            </div>
+                            <div class="form-group row justify-content-end col-6">
+                                <input type="search" class="col-sm-4 col-md-4 form-control" ng-model="textSearch"
+                                    placeholder="BÚSCAR">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row table-responsive">
+                            <table si-table id="example1" class="table table-bordered table-striped dtr-inline 
+                                table-hover table-responsive-sm table-responsive-lg">
+                                <thead>
+                                    <tr role="row" class="text-center table-info">
+                                        <th rowspan="1" colspan="1">#</th>
+                                        <th rowspan="1" colspan="1" sort-by="name" sort-init="asc">NOMBRE</th>
+                                        <th rowspan="1" colspan="1" sort-by="lastname" sort-init="asc">PRIMER APELLIDO</th>
+                                        <th rowspan="1" colspan="1" sort-by="secondLastname" sort-init="asc">SEGUNDO APELLIDO</th>
+                                        <th rowspan="1" colspan="1" sort-by="username" sort-init="asc">CORREO</th>
+                                        <th rowspan="1" colspan="2"> ACCIONES</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr si-sortable class="text-center"
+                                        ng-repeat="use in users | filter: textSearch">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{use.name}}</td>
+                                        <td>{{use.lastname}}</td>
+                                        <td>{{use.secondLastname}} {{use.secondLastname != null?'':'-'}}</td>
+                                        <td>{{use.username}}</td>
+                                        <td class="text-center">
+                                            <a class="btn btn-default" data-toggle="modal" data-target="#modal-modify"
+                                                ng-click="showModalUpdate(use)">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="form-group">
+                                                <div class="custom-control custom-switch custom-switch-off-danger 
+                                                custom-switch-on-primary">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="switch{{use.id}}" ng-model="use.status"
+                                                        data-toggle="modal" data-target="#modal-inhabilitar"
+                                                        ng-click="showModalDisable(use)">
+                                                    <label class="custom-control-label" for="switch{{use.id}}"></label>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="users==0">
+                                        <td colspan="7">
+                                            <div class="bg-warning text-center font-italic">
+                                                No se encuentran usuarios
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="7">
+                                            <si-table-pagination limit="15" first-text="Inicio" last-text="Fin"
+                                                previous-text="«" next-text="»" />
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="modal fade " id="modalForm" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <form name="createForm">
+                        <div class="modal-header table-info">
+                            <h4 class="modal-title">REGISTRAR USUARIO</h4>
+                            <button type="button" ng-click="clear()" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" novalidate="novalidate">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label style="color: black;">NOMBRE:</label>
+                                    <input
+                                        maxlength="200"
+                                        type="text" class="form-control" name="name" required placeholder="NOMBRE..."
+                                        aria-invalid="true" ng-model="user.name">
+                                    <span ng-show="createForm.name.$dirty && createForm.name.$invalid"
+                                        class="error invalid-feedback">Campo con valor invalido</span>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label style="color: black;">PRIMER APELLIDO:</label>
+                                    <input
+                                        maxlength="200"
+                                        type="text" class="form-control" name="lastname" required placeholder="PRIMER APELLIDO..."
+                                        aria-invalid="true" ng-model="user.lastname">
+                                    <span ng-show="createForm.lastname.$dirty && createForm.lastname.$invalid"
+                                        class="error invalid-feedback">Campo con valor invalido</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label style="color: black;">SEGUNDO APELLIDO:</label>
+                                    <input
+                                        maxlength="200"
+                                        type="text" class="form-control" name="secondLastname" placeholder="SEGUNDO APELLIDO..."
+                                        aria-invalid="true" ng-model="user.secondLastname">
+                                    <span ng-show="createForm.secondLastname.$dirty && createForm.secondLastname.$invalid"
+                                        class="error invalid-feedback">Campo con valor invalido</span>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label style="color: black;">FECHA DE NACIMIENTO:</label>
+                                    <input
+                                        maxlength="200"
+                                        type="date" class="form-control" name="birthday" placeholder="FECHA DE NACIMIENTO..."
+                                        aria-invalid="true" ng-model="user.birthday">
+                                    <span ng-show="createForm.birthday.$dirty && createForm.birthday.$invalid"
+                                        class="error invalid-feedback">Campo con valor invalido</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label style="color: black;">CORREO:</label>
+                                    <input
+                                        maxlength="200"
+                                        type="email" class="form-control" name="username" required placeholder="CORREO..."
+                                        aria-invalid="true" ng-model="user.username">
+                                    <span ng-show="createForm.username.$dirty && createForm.username.$invalid"
+                                        class="error invalid-feedback">Campo con valor invalido</span>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label style="color: black;">CONTRASEÑA:</label>
+                                    <input
+                                        maxlength="200"
+                                        type="password" class="form-control" name="password" required placeholder="CONTRASEÑA..."
+                                        aria-invalid="true" ng-model="user.password">
+                                    <span ng-show="createForm.password.$dirty && createForm.password.$invalid"
+                                        class="error invalid-feedback">Campo con valor invalido</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-end">
+                            <button type="button" ng-click="clear()" class="btn btn-danger"
+                                data-dismiss="modal">CANCELAR</button>
+                            <button type="button" class="btn btn-success toastrtError"
+                                data-toggle="modal" data-target="#modal-confirmReg" data-dismiss="modal"
+                                aria-label="Close" ng-click="save()">REGISTRAR</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-modificar -->
+    <div class="modal fade" id="modal-inhabilitar" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header table-info">
+                    <h4 class="modal-title">{{disableUser.status?'IN':''}}HABILITAR USUARIO</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        ng-click="cancelDisabled()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Seguro que desea {{disableUser.status?'in':''}}habilitarlo?</p>
+                </div>
+                <div class="modal-footer justify-content-end">
+                    <button type="button" id="btnCancelar" class="btn btn-danger" data-dismiss="modal"
+                        ng-click="cancelDisabled()">NO</button>
+                    <button type="button" id="btnConfirm" class="btn btn-success" data-dismiss="modal"
+                        ng-click="disable()">
+                        SÍ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade " id="modal-modify" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form id="formUpdate" name="formUpdate">
+                    <div class="modal-header table-info">
+                        <h4 class="modal-title">MODIFICAR USUARIO</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" novalidate="novalidate">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label style="color: black;">NOMBRE:</label>
+                                <input
+                                    maxlength="200"
+                                    type="text" class="form-control" name="name" required placeholder="NOMBRE..."
+                                    aria-invalid="true" ng-model="updateUser.name">
+                                <span ng-show="createForm.name.$dirty && createForm.name.$invalid"
+                                    class="error invalid-feedback">Campo con valor invalido</span>
+                            </div>
+                            <div class="form-group col-6">
+                                <label style="color: black;">PRIMER APELLIDO:</label>
+                                <input
+                                    maxlength="200"
+                                    type="text" class="form-control" name="lastname" required placeholder="PRIMER APELLIDO..."
+                                    aria-invalid="true" ng-model="updateUser.lastname">
+                                <span ng-show="createForm.lastname.$dirty && createForm.lastname.$invalid"
+                                    class="error invalid-feedback">Campo con valor invalido</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label style="color: black;">SEGUNDO APELLIDO:</label>
+                                <input
+                                    maxlength="200"
+                                    type="text" class="form-control" name="secondLastname" placeholder="SEGUNDO APELLIDO..."
+                                    aria-invalid="true" ng-model="updateUser.secondLastname">
+                                <span ng-show="createForm.secondLastname.$dirty && createForm.secondLastname.$invalid"
+                                    class="error invalid-feedback">Campo con valor invalido</span>
+                            </div>
+                            <div class="form-group col-6">
+                                <label style="color: black;">FECHA DE NACIMIENTO:</label>
+                                <input
+                                    maxlength="200"
+                                    type="date" class="form-control" name="birthday" placeholder="FECHA DE NACIMIENTO..."
+                                    aria-invalid="true" ng-model="updateUser.birthday">
+                                <span ng-show="createForm.birthday.$dirty && createForm.birthday.$invalid"
+                                    class="error invalid-feedback">Campo con valor invalido</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label style="color: black;">CORREO:</label>
+                                <input
+                                    maxlength="200"
+                                    type="email" class="form-control" name="username" required placeholder="CORREO..."
+                                    aria-invalid="true" ng-model="updateUser.username">
+                                <span ng-show="createForm.username.$dirty && createForm.username.$invalid"
+                                    class="error invalid-feedback">Campo con valor invalido</span>
+                            </div>
+                            <div class="form-group col-6">
+                                <label style="color: black;">CONTRASEÑA:</label>
+                                <input
+                                    maxlength="200"
+                                    type="password" class="form-control" name="password" required placeholder="CONTRASEÑA..."
+                                    aria-invalid="true" ng-model="updateUser.password">
+                                <span ng-show="createForm.password.$dirty && createForm.password.$invalid"
+                                    class="error invalid-feedback">Campo con valor invalido</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-end">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">CANCELAR</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#modal-confirmMod" data-dismiss="modal"
+                            aria-label="Close">MODIFICAR</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-confirmMod" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header table-info">
+                    <h4 class="modal-title">MODIFICACIÓN DE USUARIO</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Seguro que desea modificarlo?</p>
+                </div>
+                <div class="modal-footer justify-content-end">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal"
+                        data-target="#modal-modify">NO</button>
+                    <button type="button" class="btn btn-success toastrtSuccess" data-dismiss="modal" aria-label="Close"
+                        ng-click="update()">SÍ</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-modificar -->
+    </div>
+</div>

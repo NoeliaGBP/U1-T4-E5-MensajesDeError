@@ -3,17 +3,11 @@
 <title>Pagina de Error</title>
 <script
 	src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="/../static/plugins/bootstrap/js/bootstrap.min.js"/>
+	<script>document.write('<base href="' + document.location + '" />');</script>
 </head>
 <body>
-	<ul class="nav justify-content-center">
-		<li class="nav-item"><a class="nav-link link-danger	" href="#">Regresar</a></li>
-		<li class="nav-item"><a class="nav-link" aria-current="page"
-			href="#">Lista</a></li>
-		<li class="nav-item"><a class="nav-link" href="#">Agregar</a></li>
 
-
-	</ul>
 	<div class="container">
 		<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
 			<h1 class="col-8">Ha ocurrido un error</h1><span class="col-4">Trabajamos en ello para solucionarlo</span>
@@ -26,6 +20,6 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script src="/../static/plugins/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

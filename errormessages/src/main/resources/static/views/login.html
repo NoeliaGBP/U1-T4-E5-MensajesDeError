@@ -6,13 +6,13 @@
             </ul>
         </div>
         <div ng-init="checked = false">
-            <form class="form-signin" action="" method="post" name="form">
-                <label for="username">Correo electrónico</label>
-                <input class="form-styling" type="email" name="email" placeholder="" />
-                <label for="password">Contraseña</label>
-                <input class="form-styling" type="text" name="password" placeholder="" />
-                <div class="btn-animate">
-                    <a class="btn-signin">Iniciar sesión</a>
+            <form class="form-signin" ng-submit="login()" method="post" name="form">
+                <label for="username" class="loginLabel ">Correo electrónico</label>
+                <input ng-model="username" class="form-styling" type="email" name="email" placeholder="" />
+                <label for="password" class="loginLabel ">Contraseña</label>
+                <input ng-model="password" class="form-styling" type="password" name="password" placeholder="" />
+                <div class="btn-animate" >
+                    <button type="submit" style="color: white; padding-top: 8px;" class="btn btn-signin">Iniciar sesión</button>
                 </div>
             </form>
         </div>
