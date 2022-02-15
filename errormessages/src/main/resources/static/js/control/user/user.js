@@ -1,6 +1,5 @@
 app.controller('user', function ($rootScope, $scope, Main, $http, $location, $localStorage) {
-
-
+    var $ = jQuery;
     $scope.users = [];
     $scope.updateUser = {};
     $scope.disableUser = {};
@@ -32,11 +31,9 @@ app.controller('user', function ($rootScope, $scope, Main, $http, $location, $lo
                 $rootScope.showToastr("success", "Registro exitoso");
                 $scope.users.push(success.data.result);
                 $scope.user = {};
+                $('#modalForm').modal('toggle');
             }, (error) => {
-                $rootScope.showToastr("error", "No se ha podido realizar el registro");
-                $scope.clear2 = {};
-                $scope.user = angular.copy($scope.clear2);
-                document.getElementById('createForm').reset();
+                $rootScope.showToastr(error.data.type, error.data.text);
             })
     }
 
@@ -48,15 +45,19 @@ app.controller('user', function ($rootScope, $scope, Main, $http, $location, $lo
                 let result = success.data.result;
                 let index = $scope.users.findIndex(x => x.id === result.id);
                 $scope.users.splice(index, 1, result);
+                $('#modal-confirmMod').modal('toggle');
+                $('#modal-modify').modal('hide');
             },
             (error) => {
-                $rootScope.showToastr("error", "No se ha podido realizar la modificación");
+                $('#modal-confirmMod').modal('toggle');
+                $('#modal-modify').modal('show');
+                $rootScope.showToastr(error.data.type, error.data.text);
             });
     }
 
 
     $scope.disable = () => {
-        Main.put(us + '/' + $scope.disableUser.id,null,
+        Main.put(us + '/' + $scope.disableUser.id, null,
             (success) => {
                 $rootScope.showToastr(success.data.type, success.data.text);
                 let result = success.data.result;
@@ -72,11 +73,4 @@ app.controller('user', function ($rootScope, $scope, Main, $http, $location, $lo
     $scope.cancelDisabled = () => {
         $("#switch" + $scope.disableUser.id).prop('checked', !$("#switch" + $scope.disableUser.id).prop('checked'));
     }
-
-    $scope.clear = () => {
-        $scope.clear2 = {};
-        $scope.user = angular.copy($scope.clear2);
-        document.getElementById('createForm').reset();
-    }
-
 });

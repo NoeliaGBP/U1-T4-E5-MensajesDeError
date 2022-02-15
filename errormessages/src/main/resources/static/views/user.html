@@ -100,7 +100,7 @@
                         <div class="modal-body" novalidate="novalidate">
                             <div class="row">
                                 <div class="form-group col-6">
-                                    <label style="color: black;">NOMBRE:</label>
+                                    <label style="color: black;">NOMBRE:*</label>
                                     <input
                                         maxlength="200"
                                         type="text" class="form-control" name="name" required placeholder="NOMBRE..."
@@ -109,7 +109,7 @@
                                         class="error invalid-feedback">Campo con valor invalido</span>
                                 </div>
                                 <div class="form-group col-6">
-                                    <label style="color: black;">PRIMER APELLIDO:</label>
+                                    <label style="color: black;">PRIMER APELLIDO:*</label>
                                     <input
                                         maxlength="200"
                                         type="text" class="form-control" name="lastname" required placeholder="PRIMER APELLIDO..."
@@ -140,7 +140,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
-                                    <label style="color: black;">CORREO:</label>
+                                    <label style="color: black;">CORREO:*</label>
                                     <input
                                         maxlength="200"
                                         type="email" class="form-control" name="username" required placeholder="CORREO..."
@@ -149,7 +149,7 @@
                                         class="error invalid-feedback">Campo con valor invalido</span>
                                 </div>
                                 <div class="form-group col-6">
-                                    <label style="color: black;">CONTRASEÑA:</label>
+                                    <label style="color: black;">CONTRASEÑA:*</label>
                                     <input
                                         maxlength="200"
                                         type="password" class="form-control" name="password" required placeholder="CONTRASEÑA..."
@@ -162,9 +162,7 @@
                         <div class="modal-footer justify-content-end">
                             <button type="button" ng-click="clear()" class="btn btn-danger"
                                 data-dismiss="modal">CANCELAR</button>
-                            <button type="button" class="btn btn-success toastrtError"
-                                data-toggle="modal" data-target="#modal-confirmReg" data-dismiss="modal"
-                                aria-label="Close" ng-click="save()">REGISTRAR</button>
+                            <button id="register" type="button" class="btn btn-success toastrtError" ng-click="save()">REGISTRAR</button>
                         </div>
                     </form>
                 </div>
@@ -208,7 +206,7 @@
                     <div class="modal-body" novalidate="novalidate">
                         <div class="row">
                             <div class="form-group col-6">
-                                <label style="color: black;">NOMBRE:</label>
+                                <label style="color: black;">NOMBRE:*</label>
                                 <input
                                     maxlength="200"
                                     type="text" class="form-control" name="name" required placeholder="NOMBRE..."
@@ -217,7 +215,7 @@
                                     class="error invalid-feedback">Campo con valor invalido</span>
                             </div>
                             <div class="form-group col-6">
-                                <label style="color: black;">PRIMER APELLIDO:</label>
+                                <label style="color: black;">PRIMER APELLIDO:*</label>
                                 <input
                                     maxlength="200"
                                     type="text" class="form-control" name="lastname" required placeholder="PRIMER APELLIDO..."
@@ -246,32 +244,11 @@
                                     class="error invalid-feedback">Campo con valor invalido</span>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                <label style="color: black;">CORREO:</label>
-                                <input
-                                    maxlength="200"
-                                    type="email" class="form-control" name="username" required placeholder="CORREO..."
-                                    aria-invalid="true" ng-model="updateUser.username">
-                                <span ng-show="createForm.username.$dirty && createForm.username.$invalid"
-                                    class="error invalid-feedback">Campo con valor invalido</span>
-                            </div>
-                            <div class="form-group col-6">
-                                <label style="color: black;">CONTRASEÑA:</label>
-                                <input
-                                    maxlength="200"
-                                    type="password" class="form-control" name="password" required placeholder="CONTRASEÑA..."
-                                    aria-invalid="true" ng-model="updateUser.password">
-                                <span ng-show="createForm.password.$dirty && createForm.password.$invalid"
-                                    class="error invalid-feedback">Campo con valor invalido</span>
-                            </div>
-                        </div>
                     </div>
                     <div class="modal-footer justify-content-end">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">CANCELAR</button>
-                        <button type="button" class="btn btn-success" data-toggle="modal"
-                            data-target="#modal-confirmMod" data-dismiss="modal"
-                            aria-label="Close">MODIFICAR</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-dismiss="modal"
+                                data-target="#modal-confirmMod">MODIFICAR</button>
                     </div>
                 </form>
             </div>
@@ -292,7 +269,7 @@
                 <div class="modal-footer justify-content-end">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal"
                         data-target="#modal-modify">NO</button>
-                    <button type="button" class="btn btn-success toastrtSuccess" data-dismiss="modal" aria-label="Close"
+                    <button type="button" class="btn btn-success toastrtSuccess"
                         ng-click="update()">SÍ</button>
                 </div>
             </div>

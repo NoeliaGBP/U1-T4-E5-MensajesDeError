@@ -1,21 +1,26 @@
 app.factory('myHttpInterceptor', function ($q, $rootScope, $location, $localStorage) {
+
     return {
         request: function (config) {
             if (config.url.indexOf("/api/") !== -1) {
                 isLogged = $localStorage.logged;
+                if (isLogged && isLogged != undefined) {
+                    $location.path('/users');
+                }
             }
             return config || $q.when(config);
         },
         responseError: function (response) {
             // Unauthorized
             if (response.status == 400) {
-                if(response.data.errors){
-                    $rootScope.showToastr('warning', 'Validación de datos no aprobada, comprobar información enviada, contacte al administrador del sistema para dar seguimiento.');
+                if (response.data.errors) {
+                    console.log(response.data.errors);
+                    $rootScope.getErrors(response.data.errors);
                 }
             }
             if (response.status == 401) {
                 // Cerramos sesión
-                $rootScope.logout();    
+                $rootScope.logout();
             }
             if (response.status == 403) {
                 $rootScope.showToastr('warning', 'No se cuentan con los permisos');
@@ -23,10 +28,10 @@ app.factory('myHttpInterceptor', function ($q, $rootScope, $location, $localStor
             if (response.status == 404) {
                 $rootScope.showToastr('error', 'Página no encontrada');
             }
-            if(response.status == 500){
+            if (response.status == 500) {
                 $rootScope.showToastr('error', 'Se ha presentado un inconveniente intentalo mas tarde');
             }
-            if(response.status == -1){
+            if (response.status == -1) {
                 $rootScope.showToastr('error', 'No se obtuvo respuesta del servidor');
             }
 
@@ -63,7 +68,7 @@ app.factory('Main', function ($http) {
                 withCredentials: false,
             }).then(success, error);
         },
-        put: function (service,data, success, error) {
+        put: function (service, data, success, error) {
             return $http({
                 method: 'PUT',
                 url: baseUrl + service,

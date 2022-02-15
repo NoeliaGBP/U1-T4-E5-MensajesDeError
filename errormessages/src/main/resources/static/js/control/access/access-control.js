@@ -9,7 +9,7 @@ app.controller('login', function ($rootScope, $scope, Main, $http, $location, $l
             $localStorage.logged = true;
             $location.path('/users');
         }, (error) => {
-            $rootScope.showToastr("error", "No se ha podido iniciar sesión");
+            $rootScope.showToastr(error.data.type, error.data.text);
         });
     }
 

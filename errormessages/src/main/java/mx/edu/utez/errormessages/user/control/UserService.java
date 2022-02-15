@@ -54,7 +54,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public ResponseEntity login(UserDto dto) {
         if (!passwordValidator.isValid(dto.getPassword())) {
-            return new ResponseEntity(new Message("La contraseña no cumple con las características de contraseña segura", "warning"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Message("La contraseña es incorrecta", "warning"), HttpStatus.BAD_REQUEST);
         }
         if (!patternMatches(dto.getUsername())) {
             return new ResponseEntity(new Message("Correo electrónico mal formado", "warning"), HttpStatus.BAD_REQUEST);
@@ -65,7 +65,7 @@ public class UserService {
                 return new ResponseEntity(new Message("Credenciales incorrectas", "warning"), HttpStatus.NOT_FOUND);
             }
             if (!optionalUser.get().isStatus()) {
-                return new ResponseEntity(new Message("Usuario inactivo", "warning"), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new Message("Error al iniciar sesión", "warning"), HttpStatus.BAD_REQUEST);
             }
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
             return new ResponseEntity(new Message("Credenciales correctas", "success", optionalUser.get()), HttpStatus.OK);
