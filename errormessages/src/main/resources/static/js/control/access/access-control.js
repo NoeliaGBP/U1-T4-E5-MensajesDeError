@@ -6,6 +6,7 @@ app.controller('login', function ($rootScope, $scope, Main, $http, $location, $l
         }
 
         Main.post('/api/user/login', $scope.data, (success) => {
+            $localStorage.sesion = success.data;
             $localStorage.logged = true;
             $location.path('/users');
         }, (error) => {
