@@ -17,6 +17,7 @@ app.run(function ($rootScope, $location, $localStorage) {
             toastr.warning('', message);
         }
     }
+
     $rootScope.getErrors = (errors) => {
         errors.forEach(error => {
             let pos = error.lastIndexOf(':') + 1;

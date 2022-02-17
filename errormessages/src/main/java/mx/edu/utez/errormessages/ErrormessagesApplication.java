@@ -9,16 +9,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 public class ErrormessagesApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ErrormessagesApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ErrormessagesApplication.class, args);
+    }
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			public void addCorsMapping(CorsRegistry registry) {
-				registry.addMapping("/api/*").allowedOrigins(new String[]{"*"}).allowedMethods();
-			}
-		};
-	}
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            public void addCorsMapping(CorsRegistry registry) {
+                registry.addMapping("/api/*").allowedOrigins(new String[]{"*"}).allowedMethods();
+            }
+        };
+    }
 }

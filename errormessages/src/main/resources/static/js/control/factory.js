@@ -6,6 +6,8 @@ app.factory('myHttpInterceptor', function ($q, $rootScope, $location, $localStor
                 if (isLogged && isLogged != undefined) {
                     session = $localStorage.sesion;
                     config.headers['Authorization'] = 'Bearer ' + session.token;
+                }else{
+                    $location.path("/");
                 }
             }
             return config || $q.when(config);
@@ -14,6 +16,8 @@ app.factory('myHttpInterceptor', function ($q, $rootScope, $location, $localStor
             if (response.status == 400) {
                 if (response.data.errors) {
                     $rootScope.getErrors(response.data.errors);
+                }else{
+                    $rootScope.showToastr('error', 'Ocurrió un error');
                 }
             } else if (response.status == 401) {
                 $rootScope.showToastr('warning', 'No se cuentan con los permisos');
@@ -34,7 +38,7 @@ app.factory('myHttpInterceptor', function ($q, $rootScope, $location, $localStor
 app.factory('Main', function ($http) {
     let protocol = location.protocol;
     let host = location.host;
-    var baseUrl = `http://192.168.52.81:8083`;
+    var baseUrl = `http://localhost:8083`;
 
     return {
         post: function (service, data, success, error) {
