@@ -9,8 +9,5 @@ app.config(function ($routeProvider, $locationProvider) {
     }).when('/users', {
         templateUrl: '/views/user.html',
         controller: 'user'
-    }).otherwise(
-        {redirectTo: '/'}
-    )
-
+    })
 });

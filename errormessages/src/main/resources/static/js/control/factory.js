@@ -14,28 +14,23 @@ app.factory('myHttpInterceptor', function ($q, $rootScope, $location, $localStor
             // Unauthorized
             if (response.status == 400) {
                 if (response.data.errors) {
-                    console.log(response.data.errors);
                     $rootScope.getErrors(response.data.errors);
                 }
-            }
-            if (response.status == 401) {
+            } else if (response.status == 401) {
                 // Cerramos sesión
                 $rootScope.logout();
-            }
-            if (response.status == 403) {
+            } else if (response.status == 403) {
                 $rootScope.showToastr('warning', 'No se cuentan con los permisos');
-            }
-            if (response.status == 404) {
+            } else if (response.status == 404) {
                 $rootScope.showToastr('error', 'Página no encontrada');
-            }
-            if (response.status == 500) {
+            } else if (response.status == 500) {
                 $rootScope.showToastr('error', 'Se ha presentado un inconveniente intentalo mas tarde');
-            }
-            if (response.status == -1) {
+            } else if (response.status == -1) {
                 $rootScope.showToastr('error', 'No se obtuvo respuesta del servidor');
+            } else{
+                $rootScope.showToastr('success', response);
             }
-
-            return $q.reject(response);
+                return $q.reject(response);
         }
     }
 });
