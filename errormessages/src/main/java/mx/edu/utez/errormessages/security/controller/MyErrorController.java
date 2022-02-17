@@ -1,4 +1,4 @@
-package mx.edu.utez.errormessages.security.error;
+package mx.edu.utez.errormessages.security.controller;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -15,12 +15,14 @@ public class MyErrorController implements ErrorController {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         if (status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
-            if (statusCode == HttpStatus.NOT_FOUND.value()) {
+            if (statusCode == HttpStatus.UNAUTHORIZED.value()) {
+                return "401";
+            } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
+                return "403";
+            } else if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "404";
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 return "500";
-            }else if (statusCode == HttpStatus.FORBIDDEN.value()) {
-                return "403";
             }
         }
         return "error";

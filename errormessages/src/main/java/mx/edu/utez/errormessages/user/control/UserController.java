@@ -20,11 +20,6 @@ public class UserController {
         return service.findAll();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Object> login(@Validated(UserDto.Login.class) @RequestBody UserDto dto)  {
-        return service.login(dto);
-    }
-
     @PostMapping("")
     public ResponseEntity<Object> save(@Validated(UserDto.Register.class) @RequestBody UserDto dto)  {
         return service.save(dto);

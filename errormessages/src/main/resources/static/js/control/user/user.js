@@ -1,4 +1,4 @@
-app.controller('user', function ($rootScope, $scope, Main, $http, $location, $localStorage) {
+app.controller('user', function ($rootScope, $scope, Main) {
     var $ = jQuery;
     $scope.users = [];
     $scope.updateUser = {};

@@ -1,5 +1,7 @@
 package mx.edu.utez.errormessages.user.control;
 
+import mx.edu.utez.errormessages.security.jwt.JwtProvider;
+import mx.edu.utez.errormessages.security.model.JwtDto;
 import mx.edu.utez.errormessages.user.model.User;
 import mx.edu.utez.errormessages.user.model.UserDto;
 import mx.edu.utez.errormessages.user.model.UserRepository;
@@ -11,11 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -33,6 +38,9 @@ public class UserService {
 
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtProvider jwtProvider;
 
     public boolean patternMatches(String emailAddress) {
         String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
@@ -67,8 +75,20 @@ public class UserService {
             if (!optionalUser.get().isStatus()) {
                 return new ResponseEntity(new Message("Error al iniciar sesión", "warning"), HttpStatus.BAD_REQUEST);
             }
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
-            return new ResponseEntity(new Message("Credenciales correctas", "success", optionalUser.get()), HttpStatus.OK);
+            if (!optionalUser.get().getUsername().endsWith("utez.edu.mx")) {
+                return new ResponseEntity(new Message("Error al iniciar sesión", "error"), HttpStatus.FORBIDDEN);
+            }
+            User user = optionalUser.get();
+            Authentication authentication = authenticationManager.authenticate(
+                   new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String tkn = jwtProvider.generateToken(authentication);
+            JwtDto jwtDto = new JwtDto(tkn, userDetails.getUsername(), Collections.singleton("USER"));
+            jwtDto.setName(user.getName() + " " + user.getLastname() + " " + user.getSecondLastname());
+            jwtDto.setIdentKey(user.getId());
+            return new ResponseEntity<>(jwtDto, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(new Message("Error de credenciales", "error"), HttpStatus.BAD_REQUEST);
         }

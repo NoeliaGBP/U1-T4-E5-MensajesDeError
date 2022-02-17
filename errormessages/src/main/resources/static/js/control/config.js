@@ -2,7 +2,7 @@ app.config(function ($httpProvider) {
     $httpProvider.interceptors.push('myHttpInterceptor');
 });
 
-app.config(function ($routeProvider, $locationProvider) {
+app.config(function ($routeProvider) {
     $routeProvider.when('/', {
         templateUrl: '/views/login.html',
         controller: 'login'

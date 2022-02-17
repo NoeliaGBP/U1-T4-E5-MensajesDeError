@@ -4,8 +4,7 @@ app.controller('login', function ($rootScope, $scope, Main, $http, $location, $l
             "username": $scope.username,
             "password": $scope.password
         }
-
-        Main.post('/api/user/login', $scope.data, (success) => {
+        Main.post('/auth/login', $scope.data, (success) => {
             $localStorage.sesion = success.data;
             $localStorage.logged = true;
             $location.path('/users');
@@ -13,5 +12,4 @@ app.controller('login', function ($rootScope, $scope, Main, $http, $location, $l
             $rootScope.showToastr(error.data.type, error.data.text);
         });
     }
-
 });
